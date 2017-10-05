@@ -5,7 +5,7 @@ function A_ransac = estimateTransformRANSAC(img1_points,img2_points)
     e = 0.5; %outlier ratio = no. of outliers/total no. points
              %              = 1- no. of inliers/total no. of points
     p = 0.99; %probability that a point is an inlier
-    N_iter = round(log10(1-p)/log10(1-(1-e)^k)) % no. of iterations
+    N_iter = round(log10(1-p)/log10(1-(1-e)^k)); % no. of iterations
     %distThreshold = sqrt(5.99*sigma) %sigma = expected uncertainty
     %inlierThreshold = 0
     %% Determination of Inliers
@@ -32,7 +32,7 @@ function A_ransac = estimateTransformRANSAC(img1_points,img2_points)
         %% Expected Error Distribution Std Dev
         sigma = sqrt(totalError/(2*N_pts));
         %% Determining Threshold
-        distThreshold = sqrt()*sigma;
+        distThreshold = sqrt(5.99)*sigma;
         %% Determining no. of inliers
         nInliers = nnz(errorForward<distThreshold);
         %% Updating Prarameters
