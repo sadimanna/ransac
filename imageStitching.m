@@ -18,7 +18,6 @@ img1_points = matchedPoints1.Location;
 img2_points = matchedPoints2.Location;
 
 %% Estimating Homography using RANSAC
-
 A_ransac = estimateTransformRANSAC(img1_points,img2_points)
 
 %% Applying Homography Transformation Matrix directly to RGB Image
@@ -26,7 +25,7 @@ img2rgb = im2double(imread(path_to_image2));
 im2_transformed = transformImage(img2rgb,A_ransac);
 %imshow(im2_transformed)
 
-%% Expanding the images
+%% Expanding the image1 to match size of image2
 img1rgb = im2double(imread('office1.jpg'));
 im1_size = size(img1rgb);
 im2_transformed_size = size(im2_transformed);
@@ -35,8 +34,8 @@ img1_expanded = padarray(img1rgb,padsize,'post');
 %figure
 %imshow(img1_expanded)
 
-%% Blending images
-[x_overlap,y_overlap]=ginput(2);
+%% Blending images with RAMP
+[x_overlap,y_overlap]=ginput(2); %Taking user input for taking two points for starting and ending of ramp
 overlapleft = round(x_overlap(1));
 overlapright = round(x_overlap(2));
 diff = overlapright-overlapleft;
