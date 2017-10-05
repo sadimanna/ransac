@@ -1,19 +1,18 @@
 # ransac
 Applying RANSAC for determining Homography Transformation Matrix for Image Stitching
 
-Main File =>            
-                        imageStiching.m -> main function for stitching two images to get a panorama
+*Main File* =>            
 
-Supporting Functions => 
+**imageStiching.m** -> main function for stitching two images to get a panorama
 
-estimateTransformRANSAC.m -> Estimating the Homogrpahy Matrix using RANSAC
+*Supporting Functions* => 
 
-estimateTransform.m -> Estimating the Homography Matrix
+**estimateTransformRANSAC.m** -> Estimating the Homogrpahy Matrix using RANSAC
 
-transformForward.m -> Applying Homography Matrix to matched points in Image 1
+**estimateTransform.m** -> Estimating the Homography Matrix
 
-transformbackward.m -> Applying Inverse Homography Matrix to matched points in Image 2
+**transformForward.m** -> Applying Homography Matrix to matched points in Image 1
 
-transformImage.m -> Applying inverse Homography matrix to Image 2
+**transformbackward.m** -> Applying Inverse Homography Matrix to matched points in Image 2
 
-eucDist.m -> measuring euclidean distance between two points
+**transformImage.m** -> Applying inverse Homography matrix to Image 2
