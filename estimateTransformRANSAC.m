@@ -11,6 +11,8 @@ function A_ransac = estimateTransformRANSAC(img1_points,img2_points)
     %% Determination of Inliers
     im1InlierCorrPts = [];
     im2InlierCorrPts = [];
+    nmatchedInliers = 0;
+    maxMatchedInliers = 0;
     for i = 1:N_iter
         %% Random sample
         randIndexes = randi(N_pts,5,1);
@@ -34,14 +36,26 @@ function A_ransac = estimateTransformRANSAC(img1_points,img2_points)
         %% Determining Threshold
         distThreshold = sqrt(5.99)*sigma;
         %% Determining no. of inliers
-        nInliers = nnz(errorForward<distThreshold);
+        logic1Inlier = errorForward<distThreshold;
+        logic2Inlier = errorBackward<distThreshold;
+        %nInliers1 = nnz(logic1Inlier);
+        %nInliers2 = nnz(logic2Inlier);
+        im1Inliers = logic1Inlier.*img1_points;
+        im2Inliers = logic2Inlier.*img2_points;
+        matchedInliers = im1Inliers(:,1)>0 & im2Inliers(:,1)>0; 
+        nMatchedInliers = nnz(matchedInliers); %number of matched inliers
+        %% Determining the Inliers
+        im1MatchedInliers = im1Inliers(matchedInliers,:); %inliers in Image 1
+        im2MatchedInliers = im2Inliers(matchedInliers,:); %inliers in image 2
         %% Updating Prarameters
-        if nInliers > (1-e)*N_pts
-            e = 1-(nInliers/N_pts);
+        if nMatchedInliers > maxMatchedInliers
+            e = (1-nMatchedInliers/N_pts);
             N_iter = round(log10(1-p)/log10(1-(1-e)^k));
-            im1InlierCorrPts = im1pts;
-            im2InlierCorrPts = im2pts;
-        end    
+            im1InlierCorrPts = im1MatchedInliers;
+            im2InlierCorrPts = im2MatchedInliers;
+            maxMatchedInliers = nMatchedInliers
+            A_ransac_best = A;
+        end 
     end
     %% Final Homography Estimation
     A_ransac = estimateTransform(im1InlierCorrPts,im2InlierCorrPts);
